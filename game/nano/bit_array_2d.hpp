@@ -70,41 +70,26 @@ public:
   // (including '\0') .
   // For example, the Frame class has MAX_X columns, each with 48 bits (which
   // can be represented by 12 hex characters). The given buf must have a size at
-  // least (12 + 1) * MAX_X + 1. void compressed_form(char *buf) const {
-  //     // Start with '\0' so that strlen(buf) is 0
-  //     buf[0] = '\0';
-  //     for (int x = 0; x < N; x++) {
-  //         uint64_t val = get_col(x);
-
-  //         if (val != 0) {
-  //             sprintf(buf + strlen(buf), "%lX,", val);
-  //         } else {
-  //             int zeros = 1;
-  //             while (x + zeros < N && get_col(x + zeros) == 0) {
-  //                 zeros++;
-  //             }
-  //             sprintf(buf + strlen(buf), "#%X,", zeros);
-  //             x += zeros - 1;
-  //         }
-  //     }
-  // }
+  // least (12 + 1) * MAX_X + 1. 
   void compressed_form(char *buf) const {
-    buf[0] = '\0'; // Start with '\0' so that strlen(buf) is 0
-    for (int x = 0; x < N; x++) {
-      uint64_t val = get_col(x);
+      // Start with '\0' so that strlen(buf) is 0
+      buf[0] = '\0';
+      for (int x = 0; x < N; x++) {
+          uint64_t val = get_col(x);
 
-      if (val != 0) {
-        sprintf(buf + strlen(buf), "%lX,",
-                static_cast<unsigned long long>(val));
-      } else {
-        int zeros = 1;
-        while (x + zeros < N && get_col(x + zeros) == 0) {
-          zeros++;
-        }
-        sprintf(buf + strlen(buf), "#%X,", zeros);
-        x += zeros - 1;
+          if (val != 0) {
+              sprintf(buf + strlen(buf), "%lX,", val);
+          } else {
+              int zeros = 1;
+              while (x + zeros < N && get_col(x + zeros) == 0) {
+                  zeros++;
+              }
+              sprintf(buf + strlen(buf), "#%X,", zeros);
+              x += zeros - 1;
+          }
       }
-    }
+  }
+
 
   private:
     static constexpr int MAX_ROW_SIZE = 64;
@@ -126,8 +111,8 @@ public:
 
   // 	template <std::size_t R>
   // 	BitArray2D(const std::array<std::array<uint8_t, N>, R> &orig_array) :
-  // array{} { 		static_assert(R <= MAX_ROW_SIZE, "Exceed maximum row size
-  // supported");
+  // array{} { 		static_assert(R <= MAX_ROW_SIZE, "Exceed maximum row
+  // size supported");
 
   // 		// Setting column by column is more cache-friendly
   // 		for (int c = 0; c < N; c++) {
@@ -140,8 +125,9 @@ public:
   // 	}
 
   // 	template <std::size_t R> std::array<std::array<uint8_t, N>, R>
-  // to_uint8_array() const { 		static_assert(R <= MAX_ROW_SIZE, "Exceed maximum
-  // row size supported"); 		std::array<std::array<uint8_t, N>, R> frame = {0};
+  // to_uint8_array() const { 		static_assert(R <= MAX_ROW_SIZE, "Exceed
+  // maximum row size supported"); 		std::array<std::array<uint8_t,
+  // N>, R> frame = {0};
 
   // 		for (int r = 0; r < R; r++) {
   // 			for (int c = 0; c < N; c++) {

@@ -78,7 +78,8 @@ public:
           uint64_t val = get_col(x);
 
           if (val != 0) {
-              sprintf(buf + strlen(buf), "%lX,", val);
+              // sprintf(buf + strlen(buf), "%lX,", val);
+              sprintf(buf + strlen(buf), "%llX,", (unsigned long long)val);
           } else {
               int zeros = 1;
               while (x + zeros < N && get_col(x + zeros) == 0) {
